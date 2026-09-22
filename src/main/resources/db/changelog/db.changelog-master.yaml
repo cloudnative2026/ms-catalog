@@ -46,3 +46,178 @@ databaseChangeLog:
             sql: ALTER TABLE products ADD CONSTRAINT products_price_nonnegative CHECK (price >= 0)
         - sql:
             sql: ALTER TABLE products ADD CONSTRAINT products_stock_nonnegative CHECK (stock >= 0)
+
+  - changeSet:
+      id: 002-seed-products
+      author: pedidos360
+      changes:
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 201
+              - column:
+                  name: name
+                  value: "Hamburguesa Clásica"
+              - column:
+                  name: description
+                  value: "Carne de res premium con queso cheddar, lechuga y tomate en pan brioche."
+              - column:
+                  name: price
+                  valueNumeric: 5000.00
+              - column:
+                  name: stock
+                  valueNumeric: 50
+              - column:
+                  name: image_url
+                  value: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500"
+              - column:
+                  name: active
+                  valueBoolean: true
+              - column:
+                  name: version
+                  valueNumeric: 0
+
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 202
+              - column:
+                  name: name
+                  value: "Papas Fritas Rústicas"
+              - column:
+                  name: description
+                  value: "Porción grande de papas crujientes sazonadas con sal de mar y romero."
+              - column:
+                  name: price
+                  valueNumeric: 5000.00
+              - column:
+                  name: stock
+                  valueNumeric: 80
+              - column:
+                  name: image_url
+                  value: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500"
+              - column:
+                  name: active
+                  valueBoolean: true
+              - column:
+                  name: version
+                  valueNumeric: 0
+
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 203
+              - column:
+                  name: name
+                  value: "Pizza Artesanal Pepperoni"
+              - column:
+                  name: description
+                  value: "Masa madre, salsa pomodoro, mozzarella y abundante pepperoni italiano."
+              - column:
+                  name: price
+                  valueNumeric: 10000.00
+              - column:
+                  name: stock
+                  valueNumeric: 30
+              - column:
+                  name: image_url
+                  value: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500"
+              - column:
+                  name: active
+                  valueBoolean: true
+              - column:
+                  name: version
+                  valueNumeric: 0
+
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 204
+              - column:
+                  name: name
+                  value: "Bebida Gaseosa 1.5L"
+              - column:
+                  name: description
+                  value: "Refresco helado para acompañar tus comidas favoritas."
+              - column:
+                  name: price
+                  valueNumeric: 4500.00
+              - column:
+                  name: stock
+                  valueNumeric: 100
+              - column:
+                  name: image_url
+                  value: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500"
+              - column:
+                  name: active
+                  valueBoolean: true
+              - column:
+                  name: version
+                  valueNumeric: 0
+
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 205
+              - column:
+                  name: name
+                  value: "Postre Brownie con Helado"
+              - column:
+                  name: description
+                  value: "Brownie tibio de chocolate con nueces y una bola de helado de vainilla."
+              - column:
+                  name: price
+                  valueNumeric: 2600.00
+              - column:
+                  name: stock
+                  valueNumeric: 40
+              - column:
+                  name: image_url
+                  value: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500"
+              - column:
+                  name: active
+                  valueBoolean: true
+              - column:
+                  name: version
+                  valueNumeric: 0
+
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 206
+              - column:
+                  name: name
+                  value: "Sandwich Pollo Crispy"
+              - column:
+                  name: description
+                  value: "Pechuga de pollo apanada crocante, coleslaw y salsa tártara casera."
+              - column:
+                  name: price
+                  valueNumeric: 6000.00
+              - column:
+                  name: stock
+                  valueNumeric: 25
+              - column:
+                  name: image_url
+                  value: "https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?w=500"
+              - column:
+                  name: active
+                  valueBoolean: true
+              - column:
+                  name: version
+                  valueNumeric: 0
+
+        - sql:
+            sql: SELECT setval('products_id_seq', (SELECT COALESCE(MAX(id), 1) FROM products))
