@@ -8,12 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/catalog/products")
 @SecurityRequirement(name = "bearerAuth")
 public class CatalogController {
+
     private final CatalogService service;
 
     public CatalogController(CatalogService service) {
@@ -21,41 +23,57 @@ public class CatalogController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('Admin', 'User')")
+    @PreAuthorize("hasAnyRole('Admin', 'Operador')")
     public List<ProductResponse> findAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('Admin', 'User')")
+    @PreAuthorize("hasAnyRole('Admin', 'Operador')")
     public ProductResponse findById(@PathVariable Long id) {
         return service.findById(id);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('Admin')")
-    public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> create(
+            @Valid @RequestBody ProductRequest request) {
+
         ProductResponse product = service.create(request);
-        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(product.id()).toUri()).body(product);
+
+        return ResponseEntity.created(
+                ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(product.id())
+                        .toUri()
+        ).body(product);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('Admin')")
-    public ProductResponse update(@PathVariable Long id, @Valid @RequestBody ProductRequest request) {
+    public ProductResponse update(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductRequest request) {
+
         return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+
         service.delete(id);
+
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/stock")
-    @PreAuthorize("hasAnyRole('Admin')")
-    public ProductResponse updateStock(@PathVariable Long id, @Valid @RequestBody StockUpdateRequest request) {
+    @PreAuthorize("hasAnyRole('Admin', 'Operador')")
+    public ProductResponse updateStock(
+            @PathVariable Long id,
+            @Valid @RequestBody StockUpdateRequest request) {
+
         return service.updateStock(id, request);
     }
 }

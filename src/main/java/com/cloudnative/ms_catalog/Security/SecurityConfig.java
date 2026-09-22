@@ -29,17 +29,58 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 //Este apartado nos permite definir quien y que es necesario para acceder a cada punto del sistema/backend
                 .authorizeHttpRequests(auth -> auth
-                        //Consultas ANY desde apigateway tienen acceso de consulta de metodos y endpoints
-                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        //Toda consulta a api publica esta permitida sin necesidad de login
-                        .requestMatchers("/api/publico/**").permitAll()
-                        //Toda consulta a api privada debe estar correctamente logeado via MSAL
-                        .requestMatchers("/api/privado/**").authenticated()
-                        //Toda consulta a api linea admin debe tener rol administrados en el IAM
-                        .requestMatchers("/api/admin/**").hasRole("Admin")
-                        //Para todas las demas deben estar logeados
-                        .anyRequest().authenticated()
+
+                    // CORS preflight
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                    // Swagger
+                    .requestMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                    ).permitAll()
+
+                    // Public endpoints
+                    .requestMatchers("/api/publico/**").permitAll()
+
+                    // Catalog - lectura
+                    .requestMatchers(
+                        HttpMethod.GET,
+                        "/api/catalog/products/**"
+                    ).hasAnyRole("Admin", "Operador")
+
+                    // Catalog - crear productos
+                    .requestMatchers(
+                        HttpMethod.POST,
+                        "/api/catalog/products"
+                    ).hasRole("Admin")
+
+                    // Catalog - modificar productos
+                    .requestMatchers(
+                        HttpMethod.PUT,
+                        "/api/catalog/products/**"
+                    ).hasRole("Admin")
+
+                    // Catalog - modificar stock
+                    .requestMatchers(
+                        HttpMethod.PATCH,
+                        "/api/catalog/products/*/stock"
+                    ).hasAnyRole("Admin", "Operador")
+
+                    // Catalog - eliminar
+                    .requestMatchers(
+                        HttpMethod.DELETE,
+                        "/api/catalog/products/**"
+                    ).hasRole("Admin")
+
+                    // Existing private endpoints
+                    .requestMatchers("/api/privado/**").authenticated()
+
+                    // Existing admin endpoints
+                    .requestMatchers("/api/admin/**").hasRole("Admin")
+
+                    // Everything else requires authentication
+                    .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
