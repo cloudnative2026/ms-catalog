@@ -220,4 +220,5 @@ databaseChangeLog:
                   valueNumeric: 0
 
         - sql:
+            dbms: postgresql 
             sql: SELECT setval('products_id_seq', (SELECT COALESCE(MAX(id), 1) FROM products))
