@@ -47,7 +47,7 @@ public class SecurityConfig {
                     .requestMatchers(
                         HttpMethod.GET,
                         "/api/catalog/products/**"
-                    ).hasAnyRole("Admin", "Operador")
+                    ).hasAnyRole("Admin", "Operador", "Cliente")
 
                     // Catalog - crear productos
                     .requestMatchers(

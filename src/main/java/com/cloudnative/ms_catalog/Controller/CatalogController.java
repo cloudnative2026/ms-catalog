@@ -23,13 +23,13 @@ public class CatalogController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('Admin', 'Operador')")
+    @PreAuthorize("hasAnyRole('Admin', 'Operador', 'Cliente')")
     public List<ProductResponse> findAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('Admin', 'Operador')")
+    @PreAuthorize("hasAnyRole('Admin', 'Operador', 'Cliente')")
     public ProductResponse findById(@PathVariable Long id) {
         return service.findById(id);
     }

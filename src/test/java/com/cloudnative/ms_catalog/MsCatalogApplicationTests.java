@@ -70,7 +70,10 @@ class MsCatalogApplicationTests {
     void rejectsMissingInvalidAndUnauthorizedTokens() throws Exception {
         mvc.perform(get(URL)).andExpect(status().isUnauthorized());
         mvc.perform(get(URL).header("Authorization", "Bearer invalid")).andExpect(status().isUnauthorized());
-        mvc.perform(get(URL).header("Authorization", "Bearer Cliente")).andExpect(status().isForbidden());
+        mvc.perform(get(URL).header("Authorization", "Bearer Cliente")).andExpect(status().isOk());
+        mvc.perform(post(URL).header("Authorization", "Bearer Cliente").contentType("application/json").content(BODY)).andExpect(status().isForbidden());
+        mvc.perform(put(URL + "/1").header("Authorization", "Bearer Cliente").contentType("application/json").content(BODY)).andExpect(status().isForbidden());
+        mvc.perform(delete(URL + "/1").header("Authorization", "Bearer Cliente")).andExpect(status().isForbidden());
         mvc.perform(post(URL).header("Authorization", "Bearer Operador")
                 .contentType("application/json").content(BODY)).andExpect(status().isForbidden());
         mvc.perform(put(URL + "/1").header("Authorization", "Bearer Operador")
