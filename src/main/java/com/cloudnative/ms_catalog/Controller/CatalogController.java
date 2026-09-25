@@ -12,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/catalog/products")
+@RequestMapping("/api/v1/catalog")
 @SecurityRequirement(name = "bearerAuth")
 public class CatalogController {
 
@@ -46,8 +46,8 @@ public class CatalogController {
                         .fromCurrentRequest()
                         .path("/{id}")
                         .buildAndExpand(product.id())
-                        .toUri()
-        ).body(product);
+                        .toUri())
+                .body(product);
     }
 
     @PutMapping("/{id}")
