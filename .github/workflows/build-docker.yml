@@ -75,7 +75,6 @@ jobs:
 
             : "${DB_HOST:?Falta DB_HOST}"
             : "${DB_PORT:?Falta DB_PORT}"
-            : "${DB_NAME:?Falta DB_NAME}"
             : "${DB_USERNAME:?Falta DB_USERNAME}"
             : "${DB_PASSWORD:?Falta DB_PASSWORD}"
 
