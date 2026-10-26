@@ -61,15 +61,15 @@ jobs:
           ECR_REPO: ${{ secrets.ECR_REPO_URL_MS_CATALOG }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_PORT: ${{ secrets.DB_PORT }}
-          DB_NAME: ${{ secrets.DB_NAME }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
-          command_timeout: 15m
-          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_SESSION_TOKEN,AWS_REGION,ECR_REGISTRY,ECR_REPO,DB_HOST,DB_PORT,DB_NAME,DB_USERNAME,DB_PASSWORD
+
+          envs:  AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_SESSION_TOKEN,AWS_REGION,ECR_REGISTRY,ECR_REPO,DB_HOST,DB_PORT,DB_USERNAME,DB_PASSWORD
+
           script: |
             set -eu
 
@@ -119,15 +119,14 @@ jobs:
             echo "Starting ms-catalog..."
 
             docker run -d \
-              --name ms-catalog \
-              --restart unless-stopped \
-              -p 8080:8080 \
-              -e DB_HOST="$DB_HOST" \
-              -e DB_PORT="$DB_PORT" \
-              -e DB_NAME="$DB_NAME" \
-              -e DB_USERNAME="$DB_USERNAME" \
-              -e DB_PASSWORD="$DB_PASSWORD" \
-              "$ECR_REPO:latest"
+            --name ms-catalog \
+            --restart unless-stopped \
+            -p 8080:8080 \
+            -e DB_HOST="$DB_HOST" \
+            -e DB_PORT="$DB_PORT" \
+            -e DB_USERNAME="$DB_USERNAME" \
+            -e DB_PASSWORD="$DB_PASSWORD" \
+            "$ECR_REPO:latest"
 
             echo "Container started."
 
