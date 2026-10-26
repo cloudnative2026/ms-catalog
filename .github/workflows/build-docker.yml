@@ -78,11 +78,6 @@ jobs:
             : "${DB_USERNAME:?Falta DB_USERNAME}"
             : "${DB_PASSWORD:?Falta DB_PASSWORD}"
 
-            if ! printf '%s' "$DB_NAME" \
-              | grep -Eq '^[A-Za-z0-9_]{1,64}$'; then
-              echo "DB_NAME debe tener entre 1 y 64 caracteres: letras, numeros o guion bajo."
-              exit 1
-            fi
 
             echo "Logging into ECR..."
 
@@ -108,7 +103,6 @@ jobs:
                 --protocol=TCP \
                 --connect-timeout=15 \
                 --ssl-mode=REQUIRED \
-                --execute="CREATE DATABASE IF NOT EXISTS \`$DB_NAME\` CHARACTER SET utf8mb4;"
 
             echo "Stopping previous container..."
 
